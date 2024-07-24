@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.stage._24.gestionproet24.entities.Project;
+import tn.stage._24.gestionproet24.entities.Task;
 import tn.stage._24.gestionproet24.services.ProjectService;
 
 import java.util.List;
@@ -47,5 +48,15 @@ public class ProjectController {
         projectService.deleteProject(id);
         return ResponseEntity.noContent().build();
     }
+
+//    @PutMapping("/AddTaskToProject/{projectId}")
+//    public ResponseEntity<Project> addTaskToProject(@PathVariable int projectId, @RequestBody Task task) {
+//        try {
+//            Project updatedProject = projectService.addTaskToProject(projectId, task);
+//            return ResponseEntity.ok(updatedProject);
+//        } catch (RuntimeException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
 }

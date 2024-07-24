@@ -43,10 +43,10 @@ public class AuthenticationService {
 
         userRepository.save(user);
         var jwtToken=jwtService.generateToken(user);
-       // if (req.getRole()==Role.ADMIN){
-            return new AuthenticationResponse().builder().msg("waiting for admin acceptation").build();
-       // }else {
-         //   return new AuthenticationResponse().builder().token(jwtToken).role(user.getRole()).username(user.getUsername()).msg("operation affected with success").build();
+        // if (req.getRole()==Role.ADMIN){
+        return new AuthenticationResponse().builder().msg("waiting for admin acceptation").build();
+        // }else {
+        //   return new AuthenticationResponse().builder().token(jwtToken).role(user.getRole()).username(user.getUsername()).msg("operation affected with success").build();
 
         //}
 
@@ -57,9 +57,7 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(LoginRequest req) {
         System.out.println(passwordEncoder.encode(req.getPassword()));
         System.out.println(req.getUsername());
-
         System.out.println(req.getEmail());
-
         System.out.println(req.getEmail() +"**********     1       **************" + req.getPassword());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -93,6 +91,7 @@ public class AuthenticationService {
     public AuthenticationResponse authenticateByEmail(LoginRequest req) {
         System.out.println(passwordEncoder.encode(req.getPassword()));
         System.out.println(req.getEmail());
+
         System.out.println(req.getEmail() +"**********     1       **************" + req.getPassword());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

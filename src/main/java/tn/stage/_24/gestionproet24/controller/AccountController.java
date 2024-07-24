@@ -84,4 +84,9 @@ public class AccountController {
                 return  accountService.addUserAndAssignToComment(user,commentId);
         }
 
+        @GetMapping("/admins")
+        public List<User> getAdmins(){
+                return accountService.getAdminUsers();
+        }
+
 }
