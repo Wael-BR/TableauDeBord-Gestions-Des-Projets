@@ -1,5 +1,6 @@
 package tn.stage._24.gestionproet24.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,7 +8,6 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,6 +19,7 @@ public class Project implements Serializable {
 
     private String nom;
     private String description;
+    @Enumerated(EnumType.STRING)
     private Status status;
     private java.util.Date startDate;
     private java.util.Date endDate;
@@ -27,8 +28,10 @@ public class Project implements Serializable {
     private float budget;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<Task> tasks;
 
     @ManyToMany(mappedBy = "projects", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<User> users;
 }

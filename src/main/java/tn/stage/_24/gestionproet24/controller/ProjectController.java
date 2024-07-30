@@ -17,6 +17,7 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+
     @GetMapping("/GetAllProjects")
     public List<Project> getAllProjects() {
         return projectService.getAllProjects();
@@ -49,14 +50,14 @@ public class ProjectController {
         return ResponseEntity.noContent().build();
     }
 
-//    @PutMapping("/AddTaskToProject/{projectId}")
-//    public ResponseEntity<Project> addTaskToProject(@PathVariable int projectId, @RequestBody Task task) {
-//        try {
-//            Project updatedProject = projectService.addTaskToProject(projectId, task);
-//            return ResponseEntity.ok(updatedProject);
-//        } catch (RuntimeException e) {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
+    @PutMapping("/AddTaskToProject/{projectId}")
+    public ResponseEntity<Project> addTaskToProject(@PathVariable int projectId, @RequestBody Task task) {
+        try {
+            Project updatedProject = projectService.addTaskToProject(projectId, task);
+            return ResponseEntity.ok(updatedProject);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }

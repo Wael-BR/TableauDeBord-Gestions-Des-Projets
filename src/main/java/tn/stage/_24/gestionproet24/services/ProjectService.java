@@ -76,18 +76,31 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
 
-//    @Transactional
-//    public Project addTaskToProject(int projectId, Task task) {
-//        Optional<Project> projectOptional = projectRepository.findById(projectId);
-//        if (projectOptional.isPresent()) {
-//            Project project = projectOptional.get();
-//            task.setProject(project); // Set the project for the task
-//            project.getTasks().add(task); // Add the task to the project's task set
-//            taskRepository.save(task); // Save the task
-//            return projectRepository.save(project); // Save the updated project
-//        } else {
-//            throw new RuntimeException("Project not found with id " + projectId);
-//        }
-//    }
+    /*@Transactional
+    public Project addTaskToProject(int projectId, Task task) {
+        Optional<Project> projectOptional = projectRepository.findById(projectId);
+        if (projectOptional.isPresent()) {
+            Project project = projectOptional.get();
+            task.setProject(project);
+            project.getTasks().add(task);
+            taskRepository.save(task);
+            return projectRepository.save(project);
+        } else {
+            throw new RuntimeException("Project not found with id " + projectId);
+        }
+    }*/
+    public Project addTaskToProject(int projectId, Task task) {
+        Optional<Project> projectOpt = projectRepository.findById(projectId);
+        if (!projectOpt.isPresent()) {
+            throw new RuntimeException("Project not found");
+        }
+
+        Project project = projectOpt.get();
+        task.setProject(project); // Set the project reference in the task
+        project.getTasks().add(task); // Add the task to the project’s task list
+
+        taskRepository.save(task); // Save the task to the database
+        return projectRepository.save(project); // Save the updated project to the database
+    }
 
 }
