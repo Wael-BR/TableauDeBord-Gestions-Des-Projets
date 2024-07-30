@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@Data
 @Builder
 @Getter
 @Setter

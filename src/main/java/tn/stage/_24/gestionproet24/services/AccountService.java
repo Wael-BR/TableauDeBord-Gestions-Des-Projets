@@ -19,6 +19,7 @@ import tn.stage._24.gestionproet24.repository.TaskRepository;
 import tn.stage._24.gestionproet24.repository.UserRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -185,5 +186,13 @@ public class AccountService implements UserDetailsService {
     public List<User> getAdminUsers() {
         return userRepository.findUserByRole(Role.ADMIN);
     }
+
+    // AccountService.java
+    public List<User> getNonAdminUsers() {
+        return userRepository.findAll().stream()
+                .filter(user -> !"ADMIN".equals(user.getRole())) // Filter out admins
+                .collect(Collectors.toList());
+    }
+
 
 }

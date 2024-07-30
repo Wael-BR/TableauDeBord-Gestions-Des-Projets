@@ -11,8 +11,10 @@ import tn.stage._24.gestionproet24.repository.ProjectRepository;
 import tn.stage._24.gestionproet24.repository.TaskRepository;
 import tn.stage._24.gestionproet24.repository.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 
@@ -21,6 +23,7 @@ public class TaskService {
 
     private TaskRepository taskRepository;
     private ProjectRepository projectRepository;
+    private UserRepository userRepository;
 
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
@@ -32,6 +35,21 @@ public class TaskService {
 
     public Task createTask(Task task) {
         return taskRepository.save(task);
+    }
+
+    public Task createTask2(Task task) {
+        if (task.getUsers() != null) {
+            Set<User> managedUsers = new HashSet<>();
+            for (User user : task.getUsers()) {
+                User managedUser = userRepository.findById(user.getId()).orElse(null);
+                if (managedUser != null) {
+                    managedUsers.add(managedUser);
+                }
+            }
+            task.setUsers(managedUsers);
+        }
+        return taskRepository.save(task);
+
     }
 
     public Task updateTask(int id, Task taskDetails) {

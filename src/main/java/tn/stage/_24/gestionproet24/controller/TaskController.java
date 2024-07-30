@@ -35,6 +35,18 @@ public class TaskController {
         Task createdTask = taskService.createTask(task);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
     }
+    @PostMapping("/Add2")
+    public ResponseEntity<?> createTask2(@RequestBody Task task) {
+        try {
+            Task createdTask = taskService.createTask2(task);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
+        } catch (Exception e) {
+            // Log error details and return appropriate response
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating task");
+        }
+    }
+
 
     @PutMapping("/Update/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable("id") int id, @RequestBody Task taskDetails) {

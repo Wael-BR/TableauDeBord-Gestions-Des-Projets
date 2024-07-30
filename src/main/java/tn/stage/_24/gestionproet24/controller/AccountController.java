@@ -89,4 +89,9 @@ public class AccountController {
                 return accountService.getAdminUsers();
         }
 
+        @GetMapping("/GetNonAdmins")
+        public List<User> getNonAdmins() {
+                return accountService.getNonAdminUsers();
+        }
+
 }
