@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> {
                     authorize
                             //    .requestMatchers("/user/**").hasAuthority("USER")
+                            .requestMatchers("/Athentication/refresh-token").permitAll()
                             .requestMatchers("/admin/**").hasRole(Role.ADMIN.toString())
                             //  .requestMatchers("/**").hasAnyAuthority("ADMIN","USER")
                             .anyRequest().permitAll();

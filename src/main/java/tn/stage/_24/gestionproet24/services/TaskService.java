@@ -82,4 +82,10 @@ public class TaskService {
         task.setProject(project);
         return taskRepository.save(task);
     }
+
+    public Set<Task> getTasksByProjectId(int projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found with id: " + projectId));
+        return project.getTasks();
+    }
 }

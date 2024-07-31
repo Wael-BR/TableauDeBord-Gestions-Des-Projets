@@ -1,6 +1,7 @@
 package tn.stage._24.gestionproet24.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.stage._24.gestionproet24.dao.StadersResponse;
@@ -92,6 +93,20 @@ public class AccountController {
         @GetMapping("/GetNonAdmins")
         public List<User> getNonAdmins() {
                 return accountService.getNonAdminUsers();
+        }
+
+        @GetMapping("/project/{projectId}")
+        public ResponseEntity<List<User>> getProjectUsers(@PathVariable Long projectId) {
+                try {
+                        List<User> users = accountService.getUsersByProject(projectId);
+                        if (users.isEmpty()) {
+                                return ResponseEntity.noContent().build();
+                        }
+                        return ResponseEntity.ok(users);
+                } catch (Exception e) {
+                        // Log the exception
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                }
         }
 
 }

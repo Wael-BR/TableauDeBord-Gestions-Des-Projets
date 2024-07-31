@@ -194,5 +194,8 @@ public class AccountService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
+    public List<User> getUsersByProject(Long projectId) {
+        return userRepository.findUsersByProjectIdAndRoles(projectId);
+    }
 
 }

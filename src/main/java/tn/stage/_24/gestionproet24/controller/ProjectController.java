@@ -1,22 +1,33 @@
 package tn.stage._24.gestionproet24.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.stage._24.gestionproet24.entities.Project;
 import tn.stage._24.gestionproet24.entities.Task;
+import tn.stage._24.gestionproet24.entities.User;
+import tn.stage._24.gestionproet24.services.AccountService;
 import tn.stage._24.gestionproet24.services.ProjectService;
+import tn.stage._24.gestionproet24.services.TaskService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/admin/api/projects")
 public class ProjectController {
 
-    @Autowired
     private ProjectService projectService;
+    private AccountService accountService;
+    private TaskService taskService;
 
+    @GetMapping("/GetAllAccounts")
+    public List<User> getAllAccount() {
+        return accountService.getAllAccount();
+    }
 
     @GetMapping("/GetAllProjects")
     public List<Project> getAllProjects() {
@@ -58,6 +69,11 @@ public class ProjectController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/GetTasksByProject/{projectId}")
+    public Set<Task> getTasksByProject(@PathVariable int projectId) {
+        return taskService.getTasksByProjectId(projectId);
     }
 
 }

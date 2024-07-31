@@ -2,11 +2,12 @@ package tn.stage._24.gestionproet24.authControllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.*;
+import tn.stage._24.gestionproet24.config.jwtConfig.JwtService;
 import tn.stage._24.gestionproet24.dao.AthenticationRequest;
 import tn.stage._24.gestionproet24.dao.AuthenticationResponse;
 import tn.stage._24.gestionproet24.dao.LoginRequest;
@@ -17,6 +18,8 @@ import tn.stage._24.gestionproet24.dao.LoginRequest;
 public class AthenticationController {
     private final AuthenticationService authenticationService;
 
+    private JwtService jwtService;
+    private UserDetailsService userDetailsService;
 
 
     @PostMapping("/register")
