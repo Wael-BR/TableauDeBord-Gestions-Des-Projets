@@ -27,6 +27,13 @@ public class Project implements Serializable {
     private String type;
     private float budget;
 
+    @Transient
+    private Status oldStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "assigned_user_id")
+    private User assignedUser;
+
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<Task> tasks;

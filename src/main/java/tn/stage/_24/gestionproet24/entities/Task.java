@@ -25,6 +25,13 @@ public class Task implements Serializable {
     private java.util.Date endDate;
     private int priority;
 
+    @Transient
+    private Status oldStatus;
+    @ManyToOne
+    @JoinColumn(name = "assigned_user_id")
+    private User assignedUser;
+
+
     @ManyToMany(mappedBy = "tasks", cascade = CascadeType.ALL)
     private Set<User> users;
 

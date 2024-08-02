@@ -23,11 +23,21 @@ public class Comment implements Serializable {
     private String authorType;
     private String commentableType;
 
+    @Transient
+    private String oldContent;
+    @ManyToOne
+    @JoinColumn(name = "assigned_user_id") // Add this field if needed
+    private User assignedUser;
+
+
+
     @JsonIgnore
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "user_id")
     private User author;
+
+
 
     @JsonIgnore
     @ManyToOne
