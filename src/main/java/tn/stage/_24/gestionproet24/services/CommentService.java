@@ -1,10 +1,12 @@
 package tn.stage._24.gestionproet24.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import tn.stage._24.gestionproet24.entities.Comment;
 import tn.stage._24.gestionproet24.entities.Task;
 import tn.stage._24.gestionproet24.entities.User;
+import tn.stage._24.gestionproet24.events.CommentChangeEvent;
 import tn.stage._24.gestionproet24.repository.CommentRepository;
 import tn.stage._24.gestionproet24.repository.TaskRepository;
 import tn.stage._24.gestionproet24.repository.UserRepository;
@@ -20,6 +22,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
@@ -37,13 +40,14 @@ public class CommentService {
         Optional<Comment> commentOptional = commentRepository.findById(id);
         if (commentOptional.isPresent()) {
             Comment comment = commentOptional.get();
-            comment.setDate(commentDetails.getDate());
+            String oldContent = comment.getContent(); // Capture old content
             comment.setContent(commentDetails.getContent());
-            comment.setAuthorType(commentDetails.getAuthorType());
-            comment.setCommentableType(commentDetails.getCommentableType());
-            comment.setAuthor(commentDetails.getAuthor());
-            comment.setTask(commentDetails.getTask());
-            return commentRepository.save(comment);
+            Comment updatedComment = commentRepository.save(comment);
+            // Publish event if content has changed
+            if (!oldContent.equals(updatedComment.getContent())) {
+                eventPublisher.publishEvent(new CommentChangeEvent(this, updatedComment, updatedComment.getAuthor(), updatedComment.getContent()));
+            }
+            return updatedComment;
         } else {
             throw new RuntimeException("Comment not found with id " + id);
         }
