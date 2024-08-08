@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import tn.stage._24.gestionproet24.entities.Project;
 import tn.stage._24.gestionproet24.entities.Task;
 import tn.stage._24.gestionproet24.entities.User;
+import tn.stage._24.gestionproet24.entities.listeners.ProjectStatusHistory;
+import tn.stage._24.gestionproet24.repository.listeners.ProjectStatusHistoryRepository;
 import tn.stage._24.gestionproet24.services.AccountService;
 import tn.stage._24.gestionproet24.services.ProjectService;
 import tn.stage._24.gestionproet24.services.TaskService;
@@ -20,9 +22,17 @@ import java.util.Set;
 @RequestMapping("/admin/api/projects")
 public class ProjectController {
 
+    @Autowired
     private ProjectService projectService;
+
+    @Autowired
     private AccountService accountService;
+
+    @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private ProjectStatusHistoryRepository projectStatusHistoryRepository;
 
     @GetMapping("/GetAllAccounts")
     public List<User> getAllAccount() {
@@ -76,4 +86,9 @@ public class ProjectController {
         return taskService.getTasksByProjectId(projectId);
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:4200")
+    @GetMapping("/byProject/{projectId}")
+    public List<ProjectStatusHistory> getStatusHistoryByProject(@PathVariable Long projectId) {
+        return projectStatusHistoryRepository.findByProjectId(projectId);
+    }
 }
