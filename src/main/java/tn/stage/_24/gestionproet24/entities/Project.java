@@ -21,6 +21,14 @@ public class Project implements Serializable {
     private String description;
     @Enumerated(EnumType.STRING)
     private Status status;
+    @Enumerated(EnumType.STRING)
+    private SanteGenerale santeGenerale;
+    @Enumerated(EnumType.STRING)
+    private Avancement respectPlanning;
+    @Enumerated(EnumType.STRING)
+    private Avancement respectPerimetre;
+    @Enumerated(EnumType.STRING)
+    private RespectBudget respectBudget;
     private java.util.Date startDate;
     private java.util.Date endDate;
     private String priority;
