@@ -23,12 +23,22 @@ public class ProjectStatusChangeListener {
         history.setProject(event.getProject());
         history.setOldStatus(event.getOldStatus());
         history.setNewStatus(event.getNewStatus());
+        history.setOldRespectBudget(event.getOldRespectBudget());
+        history.setNewRespectBudget(event.getNewRespectBudget());
+        history.setOldRespectPlanning(event.getOldRespectPlanning());
+        history.setNewRespectPlanning(event.getNewRespectPlanning());
+        history.setOldRespectPerimetre(event.getOldRespectPerimetre());
+        history.setNewRespectPerimetre(event.getNewRespectPerimetre());
+        history.setOldSanteGenerale(event.getOldSanteGenerale());
+        history.setNewSanteGenerale(event.getNewSanteGenerale());
 
         // Convert LocalDateTime to Date
         LocalDateTime changeDateTime = event.getChangeDate();
         Date changeDate = Date.from(changeDateTime.atZone(ZoneId.systemDefault()).toInstant());
         history.setChangeDate(changeDate);
-        System.out.println("Event received for project ID: " + event.getProject().getId());
+
+        // Optionally set assigned user if needed
+        // history.setAssignedUser(event.getProject().getAssignedUser());
 
         // Save the record to the database
         projectStatusHistoryRepository.save(history);

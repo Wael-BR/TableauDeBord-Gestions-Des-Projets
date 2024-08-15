@@ -5,11 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import tn.stage._24.gestionproet24.entities.*;
+import tn.stage._24.gestionproet24.entities.listeners.ProjectStatusHistory;
 import tn.stage._24.gestionproet24.events.ProjectStatusChangeEvent;
 import tn.stage._24.gestionproet24.repository.ProjectRepository;
 import tn.stage._24.gestionproet24.repository.TaskRepository;
 import tn.stage._24.gestionproet24.repository.UserRepository;
+import tn.stage._24.gestionproet24.repository.listeners.ProjectStatusHistoryRepository;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.List;
 
@@ -20,13 +23,20 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final ProjectStatusHistoryRepository projectStatusHistoryRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    public ProjectService(TaskRepository taskRepository, ProjectRepository projectRepository, UserRepository userRepository, ApplicationEventPublisher eventPublisher) {
+    public ProjectService(
+            TaskRepository taskRepository,
+            ProjectRepository projectRepository,
+            UserRepository userRepository,
+            ProjectStatusHistoryRepository projectStatusHistoryRepository,
+            ApplicationEventPublisher eventPublisher) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+        this.projectStatusHistoryRepository = projectStatusHistoryRepository;
         this.eventPublisher = eventPublisher;
     }
 
@@ -39,14 +49,41 @@ public class ProjectService {
     }
 
     public Project createProject(Project project) {
-        return projectRepository.save(project);
+        Project savedProject = projectRepository.save(project);
+
+        // Create initial status history
+        ProjectStatusHistory history = new ProjectStatusHistory();
+        history.setProject(savedProject);
+        history.setOldStatus(null); // No old status for a new project
+        history.setNewStatus(savedProject.getStatus());
+        history.setOldRespectBudget(null); // No old respect budget for a new project
+        history.setNewRespectBudget(savedProject.getRespectBudget());
+        history.setOldRespectPlanning(null); // No old respect planning for a new project
+        history.setNewRespectPlanning(savedProject.getRespectPlanning());
+        history.setOldRespectPerimetre(null); // No old respect perimetre for a new project
+        history.setNewRespectPerimetre(savedProject.getRespectPerimetre());
+        history.setOldSanteGenerale(null); // No old sante generale for a new project
+        history.setNewSanteGenerale(savedProject.getSanteGenerale());
+        history.setChangeDate(new Date());
+        history.setAssignedUser(savedProject.getAssignedUser()); // Set if needed
+
+        // Save the initial status history
+        projectStatusHistoryRepository.save(history);
+
+        return savedProject;
     }
 
     public Project updateProject(int id, Project projectDetails) {
         Optional<Project> projectOptional = projectRepository.findById(id);
         if (projectOptional.isPresent()) {
             Project project = projectOptional.get();
-            Status oldStatus = project.getStatus(); // Capture the old status
+
+            // Capture old values
+            Status oldStatus = project.getStatus();
+            RespectBudget oldRespectBudget = project.getRespectBudget();
+            Avancement oldRespectPlanning = project.getRespectPlanning();
+            Avancement oldRespectPerimetre = project.getRespectPerimetre();
+            SanteGenerale oldSanteGenerale = project.getSanteGenerale();
 
             // Update the project fields
             project.setNom(projectDetails.getNom());
@@ -64,9 +101,27 @@ public class ProjectService {
 
             Project updatedProject = projectRepository.save(project);
 
-            // Publish an event if the status has changed
-            if (!oldStatus.equals(updatedProject.getStatus())) {
-                eventPublisher.publishEvent(new ProjectStatusChangeEvent(this, updatedProject, oldStatus, updatedProject.getStatus()));
+            // Publish an event if any relevant attribute has changed
+            if (!oldStatus.equals(updatedProject.getStatus()) ||
+                    !oldRespectBudget.equals(updatedProject.getRespectBudget()) ||
+                    !oldRespectPlanning.equals(updatedProject.getRespectPlanning()) ||
+                    !oldRespectPerimetre.equals(updatedProject.getRespectPerimetre()) ||
+                    !oldSanteGenerale.equals(updatedProject.getSanteGenerale())) {
+
+                eventPublisher.publishEvent(new ProjectStatusChangeEvent(
+                        this,
+                        updatedProject,
+                        oldStatus,
+                        updatedProject.getStatus(),
+                        oldRespectBudget,
+                        updatedProject.getRespectBudget(),
+                        oldRespectPlanning,
+                        updatedProject.getRespectPlanning(),
+                        oldRespectPerimetre,
+                        updatedProject.getRespectPerimetre(),
+                        oldSanteGenerale,
+                        updatedProject.getSanteGenerale()
+                ));
             }
 
             return updatedProject;
@@ -74,6 +129,7 @@ public class ProjectService {
             throw new RuntimeException("Project not found with id " + id);
         }
     }
+
 
     public void deleteProject(int id) {
         projectRepository.deleteById(id);

@@ -37,6 +37,14 @@ public class Project implements Serializable {
 
     @Transient
     private Status oldStatus;
+    @Transient
+    private SanteGenerale oldSanteGenerale;
+    @Transient
+    private Avancement oldRespectPlanning;
+    @Transient
+    private Avancement oldRespectPerimetre;
+    @Transient
+    private RespectBudget oldRespectBudget;
 
     @ManyToOne
     @JoinColumn(name = "assigned_user_id")

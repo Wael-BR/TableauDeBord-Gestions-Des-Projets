@@ -9,7 +9,9 @@ import tn.stage._24.gestionproet24.entities.*;
 import tn.stage._24.gestionproet24.entities.listeners.CommentHistory;
 import tn.stage._24.gestionproet24.entities.listeners.ProjectStatusHistory;
 import tn.stage._24.gestionproet24.entities.listeners.TaskStatusHistory;
-import tn.stage._24.gestionproet24.repository.listeners.*;
+import tn.stage._24.gestionproet24.repository.listeners.ProjectStatusHistoryRepository;
+import tn.stage._24.gestionproet24.repository.listeners.TaskStatusHistoryRepository;
+import tn.stage._24.gestionproet24.repository.listeners.CommentHistoryRepository;
 
 import java.util.Date;
 
@@ -23,63 +25,70 @@ public class EntityChangeListener {
 
     @PreUpdate
     public void onProjectPreUpdate(Project project) {
-        // Save old status, assigned user, etc. before the update
-        Status oldStatus = project.getStatus(); // Assume this gets the current status before update
-        project.setOldStatus(oldStatus);
+        // Capture old values before updating
+        project.setOldStatus(project.getStatus());
+        project.setOldRespectBudget(project.getRespectBudget());
+        project.setOldRespectPlanning(project.getRespectPlanning());
+        project.setOldRespectPerimetre(project.getRespectPerimetre());
+        project.setOldSanteGenerale(project.getSanteGenerale());
     }
 
     @PostUpdate
     @Transactional
     public void onProjectPostUpdate(Project project) {
-        // Save the status change in the ProjectStatusHistory
         ProjectStatusHistory history = new ProjectStatusHistory();
         history.setProject(project);
-        history.setOldStatus(project.getOldStatus()); // This should be set in onProjectPreUpdate
+        history.setOldStatus(project.getOldStatus());
         history.setNewStatus(project.getStatus());
+        history.setOldRespectBudget(project.getOldRespectBudget());
+        history.setNewRespectBudget(project.getRespectBudget());
+        history.setOldRespectPlanning(project.getOldRespectPlanning());
+        history.setNewRespectPlanning(project.getRespectPlanning());
+        history.setOldRespectPerimetre(project.getOldRespectPerimetre());
+        history.setNewRespectPerimetre(project.getRespectPerimetre());
+        history.setOldSanteGenerale(project.getOldSanteGenerale());
+        history.setNewSanteGenerale(project.getSanteGenerale());
         history.setChangeDate(new Date());
-        history.setAssignedUser(project.getAssignedUser()); // Ensure this method is available
+        history.setAssignedUser(project.getAssignedUser());
 
         projectStatusHistoryRepository.save(history);
     }
 
     @PreUpdate
     public void onTaskPreUpdate(Task task) {
-        // Save old status, assigned user, etc. before the update
-        Status oldStatus = task.getStatus(); // Assume this gets the current status before update
-        task.setOldStatus(oldStatus);
+        task.setOldStatus(task.getStatus());
+        // Save other old fields if necessary
     }
 
     @PostUpdate
     @Transactional
     public void onTaskPostUpdate(Task task) {
-        // Save the status change in the TaskStatusHistory
         TaskStatusHistory history = new TaskStatusHistory();
         history.setTask(task);
-        history.setOldStatus(task.getOldStatus()); // This should be set in onTaskPreUpdate
+        history.setOldStatus(task.getOldStatus());
         history.setNewStatus(task.getStatus());
         history.setChangeDate(new Date());
-        history.setAssignedUser(task.getAssignedUser()); // Assuming there's a method to get assigned user
+        history.setAssignedUser(task.getAssignedUser());
 
         taskStatusHistoryRepository.save(history);
     }
 
     @PreUpdate
     public void onCommentPreUpdate(Comment comment) {
-        // Save content, author, assigned user, etc. before the update
         comment.setOldContent(comment.getContent());
     }
 
     @PostUpdate
     @Transactional
     public void onCommentPostUpdate(Comment comment) {
-        // Save the comment change in the CommentHistory
         CommentHistory history = new CommentHistory();
         history.setComment(comment);
         history.setContent(comment.getOldContent());
         history.setDate(new Date());
         history.setAuthor(comment.getAuthor());
-        history.setAssignedUser(comment.getAssignedUser()); // Assuming there's a method to get assigned user
+        history.setAssignedUser(comment.getAssignedUser());
 
         commentHistoryRepository.save(history);
     }
 }
+
