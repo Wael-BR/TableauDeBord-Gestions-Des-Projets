@@ -31,6 +31,7 @@ public class Project implements Serializable {
     private RespectBudget respectBudget;
     private java.util.Date startDate;
     private java.util.Date endDate;
+    private java.util.Date dateLivraison;
     private String priority;
     private String type;
     private float budget;

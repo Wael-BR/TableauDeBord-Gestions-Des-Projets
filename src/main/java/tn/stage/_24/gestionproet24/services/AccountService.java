@@ -1,5 +1,7 @@
 package tn.stage._24.gestionproet24.services;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -105,36 +107,25 @@ public class AccountService implements UserDetailsService {
         return Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString()));
     }
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Transactional
     public User assignUserToProject(Long userId, int projectId) {
-        /*Optional<User> userOptional = userRepository.findById(userId);
-        Optional<Project> projectOptional = projectRepository.findById(projectId);
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
 
-        if (userOptional.isPresent() && projectOptional.isPresent()) {
-            User user = userOptional.get();
-            Project project = projectOptional.get();
-
+        if (!user.getProjects().contains(project)) {
             user.getProjects().add(project);
             project.getUsers().add(user);
-
-            userRepository.save(user);
-            System.out.println(userId + projectId);
-            return user;
-        } else {
-            throw new RuntimeException("User or Project not found");
-        }*/
-        User user = userRepository.findById(userId).orElse(null);
-        Project project = projectRepository.findById(projectId).orElse(null);
-        try {
-            user.getProjects().add(project);
-        } catch (NullPointerException exception) {
-            Set<Project> projectList = new HashSet<>();
-            projectList.add(project);
-            user.setProjects(projectList);
         }
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        entityManager.flush(); // Explicitly flush the changes
+        return savedUser;
     }
+
+
 
     @Transactional
     public User assignUserToTasks(Long userId, int taskId) {

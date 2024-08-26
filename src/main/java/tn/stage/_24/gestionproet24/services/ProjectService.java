@@ -95,6 +95,7 @@ public class ProjectService {
             project.setRespectBudget(projectDetails.getRespectBudget());
             project.setStartDate(projectDetails.getStartDate());
             project.setEndDate(projectDetails.getEndDate());
+            project.setDateLivraison(projectDetails.getDateLivraison());
             project.setPriority(projectDetails.getPriority());
             project.setType(projectDetails.getType());
             project.setBudget(projectDetails.getBudget());
