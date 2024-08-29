@@ -23,6 +23,7 @@ public class Task implements Serializable {
     private Status status;
     private java.util.Date startDate;
     private java.util.Date endDate;
+    private java.util.Date dateLivraison;
     private int priority;
 
     @Transient

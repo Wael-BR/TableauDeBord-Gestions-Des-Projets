@@ -35,6 +35,10 @@ public class Project implements Serializable {
     private String priority;
     private String type;
     private float budget;
+    private float actualBudget;
+    @Transient
+    private float progressPercentage;
+
 
     @Transient
     private Status oldStatus;

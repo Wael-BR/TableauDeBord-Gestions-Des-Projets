@@ -68,6 +68,7 @@ public class TaskService {
             task.setStatus(taskDetails.getStatus());
             task.setStartDate(taskDetails.getStartDate());
             task.setEndDate(taskDetails.getEndDate());
+            task.setDateLivraison(taskDetails.getDateLivraison());
             task.setPriority(taskDetails.getPriority());
 
             // Save the task and publish the event if status changed

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import tn.stage._24.gestionproet24.entities.*;
 import tn.stage._24.gestionproet24.entities.listeners.ProjectStatusHistory;
 import tn.stage._24.gestionproet24.events.ProjectStatusChangeEvent;
+import tn.stage._24.gestionproet24.exceptions.ResourceNotFoundException;
 import tn.stage._24.gestionproet24.repository.ProjectRepository;
 import tn.stage._24.gestionproet24.repository.TaskRepository;
 import tn.stage._24.gestionproet24.repository.UserRepository;
@@ -15,6 +16,7 @@ import tn.stage._24.gestionproet24.repository.listeners.ProjectStatusHistoryRepo
 import java.util.Date;
 import java.util.Optional;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -99,6 +101,7 @@ public class ProjectService {
             project.setPriority(projectDetails.getPriority());
             project.setType(projectDetails.getType());
             project.setBudget(projectDetails.getBudget());
+            project.setActualBudget(projectDetails.getActualBudget());
 
             Project updatedProject = projectRepository.save(project);
 
@@ -149,4 +152,23 @@ public class ProjectService {
         taskRepository.save(task); // Save the task to the database
         return projectRepository.save(project); // Save the updated project to the database
     }
+
+    /******************** progress *********************/
+    public float calculateProgressPercentage(int projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+        Set<Task> tasks = project.getTasks();
+        if (tasks.isEmpty()) {
+            return 0;
+        }
+
+        long totalTasks = tasks.size();
+        long completedTasks = tasks.stream()
+                .filter(task -> task.getStatus() == Status.LIVRE_ET_CLOTURE || task.getStatus() == Status.LIVRE)
+                .count();
+
+        return (completedTasks / (float) totalTasks) * 100;
+    }
+
 }
+
+

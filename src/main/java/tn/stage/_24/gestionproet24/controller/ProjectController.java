@@ -89,4 +89,11 @@ public class ProjectController {
     public List<ProjectStatusHistory> getStatusHistoryByProject(@PathVariable Long projectId) {
         return projectStatusHistoryRepository.findByProjectId(projectId);
     }
+
+    /******************* progress ********************/
+    @GetMapping("/GetProgressPercentage/{projectId}")
+    public ResponseEntity<Float> getProgressPercentage(@PathVariable int projectId) {
+        float percentage = projectService.calculateProgressPercentage(projectId);
+        return ResponseEntity.ok(percentage);
+    }
 }
