@@ -1,0 +1,130 @@
+<p-card class="form-card">
+    <ng-template pTemplate="title">
+      <h2>Edit Project</h2>
+    </ng-template>
+    <form (ngSubmit)="saveProject()">
+      <div class="p-field">
+        <label for="name">Name</label>
+        <input
+          id="name"
+          pInputText
+          [(ngModel)]="project.nom"
+          name="name"
+          placeholder="Project Name"
+          required
+        />
+      </div>
+  
+      <div class="p-field">
+        <label for="description">Description</label>
+        <input
+          id="description"
+          pInputText
+          [(ngModel)]="project.description"
+          name="description"
+          placeholder="Description"
+          required
+        />
+      </div>
+  
+      <div class="p-field">
+        <label for="startDate">Start Date</label>
+        <p-calendar
+          id="startDate"
+          [(ngModel)]="project.startDate"
+          name="startDate"
+          placeholder="Start Date"
+          required
+          [showTime]="true"
+        ></p-calendar>
+      </div>
+  
+      <div class="p-field">
+        <label for="endDate">End Date</label>
+        <p-calendar
+          id="endDate"
+          [(ngModel)]="project.endDate"
+          name="endDate"
+          placeholder="End Date"
+          required
+          [showTime]="true"
+        ></p-calendar>
+      </div>
+  
+      <div class="p-field">
+        <label for="status">Status</label>
+        <p-dropdown
+          id="status"
+          [options]="statusOptions"
+          [(ngModel)]="project.status"
+          name="status"
+          placeholder="Select Status"
+          optionLabel="label"
+          required
+        ></p-dropdown>
+      </div>
+  
+      <div class="p-field">
+        <label for="priority">Priority</label>
+        <input
+          id="priority"
+          pInputText
+          type="number"
+          [(ngModel)]="project.priority"
+          name="priority"
+          placeholder="Priority"
+          required
+        />
+      </div>
+  
+      <div class="p-field">
+        <label for="type">Type</label>
+        <input
+          id="type"
+          pInputText
+          [(ngModel)]="project.type"
+          name="type"
+          placeholder="Type"
+          required
+        />
+      </div>
+  
+      <div class="p-field">
+        <label for="budget">Budget</label>
+        <input
+          id="budget"
+          pInputText
+          type="number"
+          [(ngModel)]="project.budget"
+          name="budget"
+          placeholder="Budget"
+          required
+        />
+      </div>
+  
+      <div class="p-field">
+        <label for="actualBudget">Actual Budget</label>
+        <input
+          id="actualBudget"
+          pInputText
+          type="number"
+          [(ngModel)]="project.actualBudget"
+          name="actualBudget"
+          placeholder="Actual Budget"
+          required
+        />
+      </div>
+  
+      <div class="p-field">
+        <button pButton type="submit" label="Save" icon="pi pi-check"></button>
+        <button
+          pButton
+          type="button"
+          icon="pi pi-times"
+          (click)="router.navigate(['/projects'])"
+          class="p-button-secondary"
+        ></button>
+      </div>
+    </form>
+  </p-card>
+  

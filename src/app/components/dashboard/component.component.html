@@ -1,0 +1,111 @@
+<p-card *ngIf="project; else noProject" class="dashboard-card">
+  <ng-template pTemplate="header">
+    <div class="header-container">
+      <h1 class="p-mb-2">Project Dashboard</h1>
+      <div [ngClass]="getRespectPlanningClass(project.respectPlanning)" class="respect-planning-status">
+        <h3>DeadLine: {{ project.respectPlanning }}</h3>
+      </div>
+    </div>
+  </ng-template>
+  <div class="p-d-flex p-flex-column">
+    <p><strong>Project Name:</strong> {{ project.nom }}</p>
+    <p><strong>Description:</strong> {{ project.description }}</p>
+    <p><strong>Start Date:</strong> {{ project.startDate | date:'shortDate' }}</p>
+    <p><strong>End Date:</strong> {{ project.endDate | date:'shortDate' }}</p>
+    <p><strong>Status:</strong> {{ project.status }}</p>
+    <p><strong>Priority:</strong> {{ project.priority }}</p>
+    <p><strong>Budget:</strong> {{ project.budget | currency }}</p>
+  </div>
+
+  <!-- Combined Card with Pie Chart and Metrics -->
+  <p-card class="combined-card">
+    <ng-template pTemplate="header">
+      <h3 class="p-mb-2">Project Metrics and Status</h3>
+    </ng-template>
+    <div class="p-grid">
+      <div class="p-col-12 p-md-8">
+        <!-- Pie Chart -->
+        <p-card class="chart-card">
+          <ng-template pTemplate="header">
+            <h3 class="p-mb-2">Tasks Status Distribution</h3>
+          </ng-template>
+          <div class="chart-container">
+            <p-chart type="pie" [data]="statusData" [options]="chartOptions"></p-chart>
+          </div>
+        </p-card>
+      </div>
+      <div class="aaaa">
+        <!-- Metrics Cards -->
+        <div class="metrics-container">
+          <p-card *ngIf="daysToComplete !== null" class="metrics-card p-mb-3">
+            <ng-template pTemplate="header">
+              <h3 class="p-mb-2">Days to Complete</h3>
+            </ng-template>
+            <div class="p-d-flex p-ai-center p-jc-center">
+              <p class="p-mb-2">The project will take <strong>{{ daysToComplete }} days</strong> to complete.</p>
+            </div>
+          </p-card>
+        
+          <p-card *ngIf="daysPassed !== null" class="metrics-card p-mb-3">
+            <ng-template pTemplate="header">
+              <h3 class="p-mb-2">Days Passed</h3>
+            </ng-template>
+            <div class="p-d-flex p-ai-center p-jc-center">
+              <p class="p-mb-2">The project has been ongoing for <strong>{{ daysPassed }} days</strong>.</p>
+            </div>
+          </p-card>
+        
+          <p-card *ngIf="daysLeft !== null" class="metrics-card p-mb-3">
+            <ng-template pTemplate="header">
+              <h3 class="p-mb-2">Days Left</h3>
+            </ng-template>
+            <div class="p-d-flex p-ai-center p-jc-center">
+              <p class="p-mb-2">There are <strong>{{ daysLeft }} days</strong> left for the project.</p>
+            </div>
+          </p-card>
+        
+          <p-card *ngIf="project" class="metrics-card p-mb-3">
+            <ng-template pTemplate="header">
+              <h3 class="p-mb-2">Budget Overview</h3>
+            </ng-template>
+            <div class="p-d-flex p-ai-center p-jc-center">
+              <p class="p-mb-2">The project budget difference is <strong>{{ calculateBudgetDifference() | currency }}</strong>.</p>
+            </div>
+          </p-card>
+        </div>
+      </div>
+    </div>
+  </p-card>
+
+  <p-card class="task-table-card">
+    <ng-template pTemplate="header">
+      <h3 class="p-mb-2">Tasks</h3>
+    </ng-template>
+    <p-table [value]="tasks" class="p-datatable-gridlines">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Priority</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-task>
+        <tr>
+          <td>{{ task.title }}</td>
+          <td>{{ task.description }}</td>
+          <td [ngClass]="getSeverity(task.status)">{{ task.status }}</td>
+          <td>{{ task.startDate | date:'shortDate' }}</td>
+          <td>{{ task.endDate | date:'shortDate' }}</td>
+          <td>{{ task.priority }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</p-card>
+
+<ng-template #noProject>
+  <p>No project data available.</p>
+</ng-template>

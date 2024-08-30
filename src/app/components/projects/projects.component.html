@@ -1,0 +1,103 @@
+<button routerLink="/add-project" class="btn btn-primary">Add Project</button>
+
+<p-table 
+    [value]="filteredProjects"
+    sortField="assignedUser.username"
+    sortMode="single"
+    dataKey="assignedUser.username"
+    rowGroupMode="subheader"
+    groupRowsBy="assignedUser.username"
+    [tableStyle]="{'min-width': '70rem'}">
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:20%">Name</th>
+            <th style="width:20%">Description</th>
+            <th style="width:20%">Start Date</th>
+            <th style="width:20%">End Date</th>
+            <th style="width:20%">Status</th>
+            <th pSortableColumn="progress" style="min-width: 10rem">
+                <div class="flex justify-content-between align-items-center">
+                    Progress (%)
+                    <p-sortIcon field="progress"></p-sortIcon>
+                    <p-columnFilter field="progress" matchMode="between" display="menu" 
+                                    [showMatchModes]="false" [showOperator]="false" 
+                                    [showAddButton]="false" class="ml-auto">
+                        <ng-template pTemplate="filter" let-filter="filterCallback">
+                            <p-slider [(ngModel)]="progressValues" [range]="true" (onSlideEnd)="filterByProgress($event)" styleClass="m-3"></p-slider>
+                            <div class="flex align-items-center justify-content-between px-2">
+                                <span>{{ progressValues[0] }}</span>
+                                <span>{{ progressValues[1] }}</span>
+                            </div>
+                        </ng-template>
+                    </p-columnFilter>
+                </div>
+            </th>
+            <th style="width:20%">Actions</th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="groupheader" let-project let-rowIndex="rowIndex" let-expanded="expanded">
+        <tr>
+            <td colspan="8">
+                <button 
+                    type="button" 
+                    pButton 
+                    pRipple 
+                    [pRowToggler]="project" 
+                    class="p-button-text p-button-rounded p-button-plain mr-2" 
+                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">
+                </button>
+                <span class="font-bold ml-2">{{project.assignedUser?.username || 'Unassigned'}}</span>
+            </td>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="rowexpansion" let-project>
+        <tr>
+            <td>{{project.nom}}</td>
+            <td>{{project.description}}</td>
+            <td>{{project.startDate | date}}</td>
+            <td>{{project.endDate | date}}</td>
+            <td [ngClass]="getStatusSeverity(project.status)">
+                {{project.status}}
+            </td>
+            <td *ngIf="progress.has(project.id)">
+                <span class="p-column-title">Progress</span>
+                <div class="progress-container">
+                    <p-progressBar [value]="progress.get(project.id)" [showValue]="false"></p-progressBar>
+                    <span class="progress-percentage">{{ progress.get(project.id) }}%</span>
+                </div>
+            </td>
+            <td>
+                <p-button 
+                    icon="pi pi-eye" 
+                    label="View Dashboard" 
+                    class="mr-2" 
+                    [routerLink]="['/dashboard', project.id]">
+                </p-button>
+                <p-button 
+                    icon="pi pi-pencil" 
+                    class="mr-2" 
+                    [rounded]="true" 
+                    [outlined]="true" 
+                    severity="success" 
+                    [routerLink]="['/edit-project', project.id]">
+                </p-button>
+                <p-button 
+                    icon="pi pi-trash" 
+                    severity="danger" 
+                    [rounded]="true" 
+                    [outlined]="true" 
+                    (click)="deleteProject(project.id)">
+                </p-button>
+                <p-button 
+                    icon="pi pi-tasks" 
+                    label="Select Tasks" 
+                    [routerLink]="['/select-tasks', project.id]">
+                </p-button>
+            </td>
+        </tr>
+    </ng-template>
+
+</p-table>

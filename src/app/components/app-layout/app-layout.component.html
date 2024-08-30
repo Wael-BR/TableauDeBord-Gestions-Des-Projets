@@ -1,0 +1,45 @@
+<p-toolbar 
+    styleClass="bg-gray-900 shadow-2" 
+    [style]="{ 'border-radius': '3rem', 'background-image': 'linear-gradient(to right, var(--bluegray-500), var(--bluegray-800))' }">
+    <ng-template pTemplate="start">
+        <img src="https://primefaces.org/cdn/primeng/images/primeng.svg" />
+    </ng-template>
+    <ng-template pTemplate="center">
+        <div class="flex flex-wrap align-items-center gap-8"> <!-- Changed gap to 4 for more spacing -->
+            <!-- Home Button -->
+            <button class="p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200"[routerLink]="'/projects'">
+                <i class="pi pi-home text-2xl"></i>
+            </button>
+        </div>
+        <div class="espace">
+            <!-- User Button -->
+            <button class="p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
+                <i class="pi pi-user text-2xl"></i>
+            </button>
+        </div> 
+        <div>
+            <!-- Search Button -->
+            <button class="p-link inline-flex justify-content-center align-items-center text-white h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200">
+                <i class="pi pi-search text-2xl"></i>
+            </button>
+        </div>
+        
+        
+    </ng-template>
+    <ng-template pTemplate="end">
+        <div class="flex align-items-center gap-2">
+            <p-avatar 
+                image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" 
+                shape="circle" />
+            <span class="font-bold text-bluegray-50">
+                Amy Elsner
+            </span>
+            <a [routerLink]="'/projects'" class="p-button p-button-text text-white hover:bg-white-alpha-10 transition-all transition-duration-200">
+                <i class="pi pi-arrow-left text-2xl"></i>
+            </a>
+        </div>
+    </ng-template>
+</p-toolbar>
+
+<!-- Main content area for routed components -->
+<router-outlet></router-outlet>

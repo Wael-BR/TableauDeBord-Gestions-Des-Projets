@@ -1,0 +1,39 @@
+.info {
+    color: blue;
+  }
+  
+  .danger {
+    color: red;
+  }
+  
+  .success {
+    color: green;
+  }
+  
+  .warning {
+    color: orange;
+  }
+  .progress-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%; /* Ensure the container takes full width */
+    padding: 0.5rem; /* Add padding for better visibility */
+}
+
+.progress-percentage {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    color: black; /* Change to black for better contrast */
+    z-index: 1; /* Ensure text is above progress bar */
+    pointer-events: none; /* Prevent interference with progress bar */
+}
+
+p-progressBar {
+    width: 100%; /* Ensure the progress bar takes full width */
+}
+
+
+  

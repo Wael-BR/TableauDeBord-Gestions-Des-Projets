@@ -1,0 +1,96 @@
+<div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h2>Add New Project</h2>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="createProject()" #projectForm="ngForm">
+  
+          <div class="form-group">
+            <label for="nom">Project Name</label>
+            <input id="nom" [(ngModel)]="project.nom" name="nom" type="text" class="form-control" placeholder="Enter project name" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" [(ngModel)]="project.description" name="description" class="form-control" placeholder="Enter project description" required></textarea>
+          </div>
+  
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" [(ngModel)]="project.status" name="status" class="form-control" required>
+              <option *ngFor="let status of statusOptions" [value]="status">{{status}}</option>
+            </select>
+          </div>
+  
+          <div class="form-group">
+            <label for="santeGenerale">Sante Generale</label>
+            <select id="santeGenerale" [(ngModel)]="project.santeGenerale" name="santeGenerale" class="form-control" required>
+              <option *ngFor="let option of santeGeneraleOptions" [value]="option">{{option}}</option>
+            </select>
+          </div>
+  
+          <div class="form-group">
+            <label for="respectPlanning">Respect Planning</label>
+            <select id="respectPlanning" [(ngModel)]="project.respectPlanning" name="respectPlanning" class="form-control" required>
+              <option *ngFor="let option of avancementOptions" [value]="option">{{option}}</option>
+            </select>
+          </div>
+  
+          <div class="form-group">
+            <label for="respectPerimetre">Respect Perimetre</label>
+            <select id="respectPerimetre" [(ngModel)]="project.respectPerimetre" name="respectPerimetre" class="form-control" required>
+              <option *ngFor="let option of avancementOptions" [value]="option">{{option}}</option>
+            </select>
+          </div>
+  
+          <div class="form-group">
+            <label for="respectBudget">Respect Budget</label>
+            <select id="respectBudget" [(ngModel)]="project.respectBudget" name="respectBudget" class="form-control" required>
+              <option *ngFor="let option of respectBudgetOptions" [value]="option">{{option}}</option>
+            </select>
+          </div>
+  
+          <div class="form-group">
+            <label for="startDate">Start Date</label>
+            <input id="startDate" [(ngModel)]="project.startDate" name="startDate" type="date" class="form-control" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="endDate">End Date</label>
+            <input id="endDate" [(ngModel)]="project.endDate" name="endDate" type="date" class="form-control" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="priority">Priority</label>
+            <input id="priority" [(ngModel)]="project.priority" name="priority" type="number" class="form-control" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="type">Type</label>
+            <input id="type" [(ngModel)]="project.type" name="type" type="text" class="form-control" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="budget">Budget</label>
+            <input id="budget" [(ngModel)]="project.budget" name="budget" type="number" class="form-control" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="actualBudget">Actual Budget</label>
+            <input id="actualBudget" [(ngModel)]="project.actualBudget" name="actualBudget" type="number" class="form-control" required />
+          </div>
+  
+          <div class="form-group">
+            <label for="assignedUser">Assign User</label>
+            <select id="assignedUser" [(ngModel)]="project.assignedUser" name="assignedUser" class="form-control" required>
+              <option *ngFor="let user of users" [value]="user.id">{{user.username}}</option>
+            </select>
+          </div>
+  
+          <button type="submit" class="btn btn-primary">Add Project</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  

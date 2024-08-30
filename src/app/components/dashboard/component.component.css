@@ -1,0 +1,141 @@
+.dashboard-card-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns of equal width */
+    gap: 2rem; /* Space between the cards */
+    margin-bottom: 2rem; /* Space below the grid */
+  }
+  
+  .dashboard-card {
+    max-width: 100%; /* Ensure the cards use the full width of their grid cell */
+    margin: 0; /* Remove default margins */
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .metrics-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping if necessary */
+    gap: 1rem; /* Space between cards */
+    justify-content: center; /* Center cards horizontally */
+    align-items: center; /* Center cards vertically */
+    height: 100vh; /* Full viewport height */
+    padding: 1rem; /* Optional padding for spacing */
+  }
+  .p-col-12,p-md-4{
+
+    margin-left: 350px;
+  }
+  .metrics-card {
+    flex: 1;
+    min-width: 200px; /* Minimum width for each card */
+    box-sizing: border-box;
+  }
+  
+  .user-info-card, .tasks-table-card, .tasks-chart-card {
+    background-color: #ffffff; /* Card background color */
+  }
+  
+  .p-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .p-list li {
+    margin-bottom: 1rem;
+  }
+  
+  .warning { color: orange; }
+  .danger { color: red; }
+  .success { color: green; }
+  .info { color: blue; }
+  .secondary { color: grey; }
+  .primary { color: navy; }
+  .default { color: black; }
+  
+  .tasks-chart-card {
+    margin-top: 2rem;
+  }
+  
+  .chart-container {
+    width: 100%; /* Adjust to make the chart responsive */
+    max-width: 250px; /* Set a maximum width */
+    height: 250px; /* Adjust height as needed */
+    margin: auto; /* Center the chart */
+  }
+  
+  .p-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .small-chart {
+    width: 100%; 
+    height: 100%; 
+  }
+  
+  .combined-card, .chart-card, .metrics-card {
+    margin-bottom: 1rem;
+    padding: 1.5rem; /* Adjust padding as needed */
+  }
+  
+  .p-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem; /* Add gap between columns */
+  }
+  
+  .p-col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .p-md-8 {
+    flex: 0 0 66.6667%;
+    max-width: 66.6667%;
+  }
+  
+  .p-md-4 {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+  }
+  
+  .p-mb-3 {
+    margin-bottom: 1.5rem;
+  }
+  
+  .days-card {
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 1.5rem; /* Add padding for better content spacing */
+    border-radius: 8px; /* Rounded corners for the card */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  
+  .respect-planning-respected {
+    color: green; /* or any color you prefer */
+    font-weight: bold;
+  }
+  
+  .respect-planning-delayed {
+    color: orange; /* or any color you prefer */
+    font-weight: bold;
+  }
+  
+  .respect-planning-partially-respected {
+    color: yellow; /* or any color you prefer */
+    font-weight: bold;
+  }
+  
+  .respect-planning-unknown {
+    color: gray; /* default color */
+  }
+  .respect-budget-respected{
+    color: green; /* or any color you prefer */
+    font-weight: bold;
+  }
+  .respect-budget-overconsumed{
+    color: red; /* or any color you prefer */
+    font-weight: bold;
+  }  
